@@ -1,17 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+const express = require('express')
+const bodyParser = require('body-parser')
+const { getUsers, createUser } = require('./users')
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const app = express()
+app.use(bodyParser.json())
+const port = 3000
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+app.get('/users', getUsers)
+app.post('/users', createUser)
+
+app.get('/', (request, response) => {
+  // do a bunch of stuff
+  response.status(200).json({
+    message: "Hello JavaScript Nerds!",
+    status: 200,
+    name: "Todd",
+    age: 45
+  })
+})
+
+app.listen(port, () => console.log('Listening on http://localhost:' + port))
